@@ -1,5 +1,5 @@
-DROP DATABASE ridekick; 
-CREATE DATABASE ridekick;
+# DROP DATABASE ridekick; 
+# CREATE DATABASE ridekick;
 USE ridekick;
 
 CREATE TABLE passenger (
