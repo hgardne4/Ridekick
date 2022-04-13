@@ -5,6 +5,7 @@ CSC261 Final Project Milestone 3
 Prof. Zhupa
 */
 
+session_start();
 // use an object oriented approach 
 class DB {
 	private $host = "localhost";
@@ -34,17 +35,20 @@ class DB {
 	// NEEDS WORK
 	// function to attempt to login a user, checks credentials, note no passwords are stored, only hashed versions
 	public function verify_user_credentials($username="", $password="") {
+		// store the hashed version of the password
+		$hashed_password = md5($password);
 		// execute the query to gather user information on the given input
-		$sql = $this->db->query("SELECT * FROM users WHERE username = '$username' AND password = '".md5($password) ."'");
+		$sql = $this->db->query("SELECT id, username, type FROM users WHERE username = '$username' AND password = '$hashed_password'");
 
-		// make sure the query gathered only one user:
+		// now make sure the query gathered only one user:
 		if($sql->num_rows == 1){
+			// if there was one row, then output sucessful query
+			echo "SUCESSFUL LOGIN @ " . date('m/d/Y h:i:s a', time()) . "\nResults:\n";
 			// gather resulting data 
 			$user = $sql->fetch_assoc();
+			echo "ID: " . $user["id"]. ", USERNAME: " . $user["username"]. ", ACCOUNT_TYPE: " . $user["type"]. "\n";
 			// make sure it was successful and then return the data from the user "=>" is used like a dictionary in an array, give A value B in A => B
-			if ('1' == $user['status'])
-				echo "Successful login!\n";
-				return array('status' => 'success', 'id' => $user['id'], 'name' => $user['name'], 'type' => $user['type']);
+			return array('status' => 'success', 'id' => $user['id'], 'username' => $user['username'], 'type' => $user['type']);
 		}
 		// o/w unsuccessful, return the error array and output failed login attempt
 		echo "Failed login, email or password invalid...\n";
@@ -52,7 +56,9 @@ class DB {
 	}
 }
 
+// TESTING THE CONNECTION
 $test = new DB;
 $test->__construct();
-$test->verify_user_credentials($username="hgardne4", $password=md5("Test#123"));
+$temp = $test->verify_user_credentials($username="hgardne4", $password="Test#123");
+echo print_r($temp);
 ?>
