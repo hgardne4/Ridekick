@@ -32,7 +32,6 @@ class DB {
 		}
 	}
 
-	// NEEDS WORK
 	// function to attempt to login a user, checks credentials, note no passwords are stored, only hashed versions
 	public function verify_user_credentials($username="", $password="") {
 		// store the hashed version of the password
@@ -47,18 +46,33 @@ class DB {
 			// gather resulting data 
 			$user = $sql->fetch_assoc();
 			echo "ID: " . $user["id"]. ", USERNAME: " . $user["username"]. ", ACCOUNT_TYPE: " . $user["type"]. "\n";
+			session_regenerate_id();
+			$_SESSION['loggedin'] = TRUE;
+			$_SESSION['name'] = $username;
+			$_SESSION['id'] = $user['id'];
+			echo "Welcome " . $username . "\n";
+
 			// make sure it was successful and then return the data from the user "=>" is used like a dictionary in an array, give A value B in A => B
 			return array('status' => 'success', 'id' => $user['id'], 'username' => $user['username'], 'type' => $user['type']);
 		}
 		// o/w unsuccessful, return the error array and output failed login attempt
-		echo "Failed login, email or password invalid...\n";
-		return array('status' => 'error', 'message' => "Failed login, email or password invalid...");
+		else {
+			echo "Failed login, email or password invalid...\n";
+			return array('status' => 'error', 'message' => "Failed login, email or password invalid...");
+		}
 	}
 }
 
 // TESTING THE CONNECTION
-$test = new DB;
-$test->__construct();
-$temp = $test->verify_user_credentials($username="hgardne4", $password="Test#123");
-echo print_r($temp);
+$instance = new DB;
+$instance->__construct();
+
+// now check when the user enters data into the login form page, exit if they attempt to login with not all needed info
+if(!isset($_POST['username'], $_POST['password'])) {
+	die("Error, please enter both a username and password...\n");
+}
+// o/w attempt to verify their credentials:
+else {
+	$instance->verify_user_credentials($_POST['username'], $_POST['password']);
+}
 ?>
