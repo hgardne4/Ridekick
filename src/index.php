@@ -1,11 +1,5 @@
-<!-- 
-Project Ridekick: Henry Gardner, Gabby Novack
-CSC261 Final Project Milestone 3
-Prof. Zhupa
-
-This file is the home page for the Ridekick Transportation service, it handles the redirecting and basic initializations. 
--->
-
+<!DOCTYPE html>
+<html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Ridekick</title>
@@ -20,15 +14,15 @@ This file is the home page for the Ridekick Transportation service, it handles t
 			<h1>Ridekick Transportation Service</h1>
 			<p>Explore the University of Rochester's campus and the greater Rochester area all through this one convenient site!  
 			</p>
-			<a href="" class="page-btn">Visit to explore transportation options at the University of Rochester</a>
+			<a href="login.html" class="page-btn">Login to get started!</a>
 		</div>
 			<div class="nav-links" id="navLinks">
                 <ul>
                     <li><a href="index.html">HOME</a></li>
                     <li><a href="schedule.html">SCHEDULE</a></li>
-                    <?php if($_SESSION['loggedin']) : ?>
+                    <!--<?php if($_SESSION['loggedin']) : ?>
                     	<li><a href="profile.html">PROFILE</a></li>
-                    <?php else : ?>
+                    <?php else : ?>-->
                     	<li><a href="login.html">LOGIN/SIGNUP</a></li>
                     <?php endif; ?>
 
@@ -37,9 +31,38 @@ This file is the home page for the Ridekick Transportation service, it handles t
 		</nav>
 	</section>
 </head>
-
-	
+<body>
+<br><br>
+  <h2 style = "text-align:center">Current Transportation Delays</h2>
+  <br>
+  <?php
+  // connect to database
+  $conn = mysqli_connect("localhost", "root", "root", "ridekick");
+  if ($conn -> connect_error) {
+	  die("Connection failed:". $conn -> connect_error);
+  }
+  $sql = "SELECT TIME_FORMAT(reporttime, '%h:%i %p') as time, length, experience_sid
+          FROM delay";
+  $result = $conn -> query($sql);
+  if ($result -> num_rows>0) {
+    echo "<ul>";
+    while($row = $result -> fetch_assoc()) {
+      $sid = intval($row["experience_sid"]);
+      $qry = $conn -> query("SELECT startl,endl,
+                            TIME_FORMAT(deptime, '%h:%i %p') as time
+                            FROM service WHERE sid=".$sid);
+      $locs = $qry -> fetch_assoc();
+      echo "<li>".$locs["time"]." bus from ".$locs["startl"]." to ".$locs["endl"]." was reported delayed ".$row["length"]." minutes at ".$row["time"]."</li>";
+    }
+  echo "</ul><br><br>";
+  } else { // no delays
+    echo "Nothing to report!";
+  }
+  $conn -> close();
+  ?>
+</body>  
 <section class="footer">
     <h4>About Us</h4>
     <p>Our website contains all the information needed to travel across the University of Rochester's campus and in the greater Rochester area. The goal is to make transportation easy for students, faculty, and staff. </p>
 </section>
+</html>
