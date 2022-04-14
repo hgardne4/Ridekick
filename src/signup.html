@@ -9,11 +9,11 @@
 	<body>
 		<div class="login">
 			<h1>Create an Account</h1>
-			<form action="config.php" method="post">
-				<label for="username">
+			<form action="signup.php" method="post">
+				<label for="name">
 					<i class="fas fa-user"></i>
 				</label>
-				<input type="text" name="username" placeholder="Enter a Username" id="username" required>
+				<input type="text" name="name" placeholder="Enter Name" id="fname" required>
 				<label for="password">
 					<i class="fas fa-lock"></i>
 				</label>
@@ -22,14 +22,6 @@
 					<i class="fas fa-lock"></i>
 				</label>
 				<input type="password" name="password2" placeholder="Re-enter Password" id="password2" required>
-				
-				
-				<select name="type" id="type">
-					<option value="student">student</option>
-					<option value="faculty">faculty</option>
-					<option value="staff">staff</option>
-					<option value="other">other</option>
-				</select>
 				<input type="submit" value="Create Account">
 				<input type="hidden" name="came_from" value="signup">
 

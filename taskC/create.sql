@@ -4,9 +4,9 @@ USE ridekick;
 
 CREATE TABLE passenger (
 	pid INT,
-	fName VARCHAR(20),
-	lName VARCHAR(20),
+	name VARCHAR(40),
 	nApp INT NOT NULL DEFAULT 0,
+	passHash BINARY(16),
     PRIMARY KEY (pid)
 );
 
