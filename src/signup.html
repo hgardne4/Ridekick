@@ -9,7 +9,7 @@
 	<body>
 		<div class="login">
 			<h1>Create an Account</h1>
-			<form action="test.php" method="post">
+			<form action="config.php" method="post">
 				<label for="username">
 					<i class="fas fa-user"></i>
 				</label>
@@ -31,6 +31,8 @@
 					<option value="other">other</option>
 				</select>
 				<input type="submit" value="Create Account">
+				<input type="hidden" name="came_from" value="signup">
+
 			</form>
 		</div>
 	</body>

@@ -32,6 +32,11 @@ class DB {
 		}
 	}
 
+	// function to terminate/close the instance
+	public function terminate() {
+		$this->db->close();
+	}
+
 	// function to attempt to login a user, checks credentials, note no passwords are stored, only hashed versions
 	public function verify_user_credentials($username="", $password="") {
 		// store the hashed version of the password
@@ -61,18 +66,51 @@ class DB {
 			return array('status' => 'error', 'message' => "Failed login, email or password invalid...");
 		}
 	}
+
+	// function to add an account to the user table 
+	public function add_user($username="", $password="", $password2="", $type="") {
+		// first make sure the two passwords are equal, if so then we can insert into the database
+		if($password == $password2) {
+			// never store the password itself, only store hashed version
+			$hashed_password = md5($password);
+			$sql = $this->db->query("INSERT INTO `users` (username, password, type) VALUES ('$username','$hashed_password', '$type')");
+			// make sure the query was successful
+			if($sql == TRUE){
+				echo "Account successfully created, return to login page.\n";
+			}
+		}
+		else {
+			die("Passwords did not match...\n");
+		}
+	}
 }
 
 // TESTING THE CONNECTION
 $instance = new DB;
 $instance->__construct();
 
+// LOGIN.HTML
 // now check when the user enters data into the login form page, exit if they attempt to login with not all needed info
-if(!isset($_POST['username'], $_POST['password'])) {
-	die("Error, please enter both a username and password...\n");
+if($_POST['came_from'] == "login"){
+	if(!isset($_POST['username'], $_POST['password'])) {
+		die("Error, please enter both a username and password...\n");
+	}
+	// o/w attempt to verify their credentials:
+	else {
+		$instance->verify_user_credentials($_POST['username'], $_POST['password']);
+	}
 }
-// o/w attempt to verify their credentials:
-else {
-	$instance->verify_user_credentials($_POST['username'], $_POST['password']);
+
+// SIGNUP.HTML
+// now check when the user enters data into the signup form page, exit if they attempt to login with not all needed info
+if($_POST['came_from'] == "signup"){
+	if(!isset($_POST['username'], $_POST['password'], $_POST['password2'], $_POST['type'])) {
+		die("Error, please enter both a username and password...\n");
+	}
+	// o/w attempt to verify their credentials:
+	else {
+		$instance->add_user($_POST['username'], $_POST['password'], $_POST['password2'], $_POST['type']);
+	}
 }
+
 ?>
