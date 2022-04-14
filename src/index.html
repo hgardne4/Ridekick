@@ -26,7 +26,11 @@ This file is the home page for the Ridekick Transportation service, it handles t
                 <ul>
                     <li><a href="index.html">HOME</a></li>
                     <li><a href="schedule.html">SCHEDULE</a></li>
-                    <li><a href="login.html">LOGIN/SIGNUP</a></li>
+                    <?php if($_SESSION['loggedin']) : ?>
+                    	<li><a href="profile.html">PROFILE</a></li>
+                    <?php else : ?>
+                    	<li><a href="login.html">LOGIN/SIGNUP</a></li>
+                    <?php endif; ?>
 
                 </ul>
 			</div>

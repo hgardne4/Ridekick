@@ -62,6 +62,7 @@ class DB {
 		}
 		// o/w unsuccessful, return the error array and output failed login attempt
 		else {
+			$_SESSION['loggedin'] = FALSE;
 			echo "Failed login, email or password invalid...\n";
 			return array('status' => 'error', 'message' => "Failed login, email or password invalid...");
 		}
@@ -75,7 +76,7 @@ class DB {
 			$hashed_password = md5($password);
 			$sql = $this->db->query("INSERT INTO `users` (username, password, type) VALUES ('$username','$hashed_password', '$type')");
 			// make sure the query was successful
-			if($sql == TRUE){
+			if($sql == TRU E){
 				echo "Account successfully created, return to login page.\n";
 			}
 		}
