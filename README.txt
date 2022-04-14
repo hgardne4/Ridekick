@@ -13,4 +13,10 @@ Listening on http://127.0.0.1:8000
 Document root is /home/henryg30/Desktop/Ridekick/src
 Press Ctrl-C to quit.
 
-The "Listening on http://127.0.0.1:8000" line contains a live link that can then be used to open and run the project. This will open the idex.html or index.php file (in our case it is the index.html file)
+The "Listening on http://127.0.0.1:8000" line contains a live link that can then be used to open and run the project. This will open the idex.html or index.php file (in our case it is the index.html file).
+
+
+NOTES:
+
+PHP design choices:
+When designing the login feature there were several approaches the best being a an object oriented approach. We were then able to make several functions corresponding to specific user inputs on different files. The best approach to discovering and differentiating which HTML files the POST data was coming from was through the HTML hidden tag feature. This way, we were able to use the same PHP file on both the login and signup pages, allowing for input to be differentiated within the backend. This was a super fun approach and made the linking between the front and backend make a lot more sense.  
