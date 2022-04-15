@@ -26,22 +26,18 @@ Prof. Zhupa
 	</style>
     <section class="header">
     <div class="text-box">
-            <h1>Schedule</h1>
+    	<?php
+    		session_start();
+    		$name = $_SESSION['name'];
+    		echo "<h1>Appointments for $name:</h1>"
+    	?>
+    	
         </div>
             <div class="nav-links" id="navLinks">
                 <ul>
                     <li><a href="index.php">HOME</a></li>
                     <li><a href="schedule.php">SCHEDULE</a></li>
-                    <?php
-                    session_start();
-                    if($_SESSION['loggedin'] == TRUE){
-                      echo "<li><a href=\"profile.php\">PROFILE</a></li>";
-                      echo "<li><a href=\"logout.php\">LOGOUT</a></li>";
-                    }
-                    else {
-                      echo "<li><a href=\"login.php\">LOGIN/SIGNUP</a></li>";
-                    }
-                    ?>
+                    <li><a href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
         </nav>
@@ -51,31 +47,29 @@ Prof. Zhupa
 	<table>
 		<tr>
 			<th>Date</th>
-			<th>Departure Time</th>
-			<th>Start Location</th>
-			<th>End Location</th>
-			<th>Remaining Seats</th>
+			<th>Time</th>
+			<th>Appointment ID</th>
+			<th>Service</th>
 		</tr>
 		<?php
-session_start();
 // connect to database
 $conn = mysqli_connect("localhost", "root", "Test#123", "ridekick");
 if ($conn -> connect_error) {
 	die("Connection failed:". $conn -> connect_error);
 }
 // get the cols we need
-$sql = "SELECT DATE_FORMAT(date, '%m/%d/%y') as date, TIME_FORMAT(deptime, '%h:%i %p') as deptime, startl, endl, nseats - napp as remseats from service";
+$sql = "SELECT DATE_FORMAT(date, '%m/%d/%y') as date, TIME_FORMAT(time, '%h:%i %p') as time, aid, isfor_sid from appointment";
 $result = $conn -> query($sql);
 // make sure has at least one row
 if ($result -> num_rows > 0) {
 	while($row = $result -> fetch_assoc()) {
-		echo "<tr><td>".$row["date"]."</td><td>".$row["deptime"]."</td><td>".$row["startl"]."</td><td>".$row["endl"]."</td><td>".$row["remseats"]."</td></tr>";
+		echo "<tr><td>".$row["date"]."</td><td>".$row["time"]."</td><td>".$row["aid"]."</td><td>".$row["isfor_sid"]."</td><td>";
 	}
-	echo "</table>";
-	} else {
-		echo "No services currently scheduled.";
-	}
-	$conn -> close();
+echo "</table>";
+} else {
+	echo "No appointments currently scheduled for " . $_SESSION['name'] . "\n";
+}
+$conn -> close();
 ?>
 </table>		
 </body>  

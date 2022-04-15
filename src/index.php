@@ -18,14 +18,18 @@
 		</div>
 			<div class="nav-links" id="navLinks">
                 <ul>
-                    <li><a href="index.html">HOME</a></li>
-                    <li><a href="schedule.html">SCHEDULE</a></li>
-                    <!--<?php if($_SESSION['loggedin']) : ?>
-                    	<li><a href="profile.html">PROFILE</a></li>
-                    <?php else : ?>-->
-                    	<li><a href="login.html">LOGIN/SIGNUP</a></li>
-                    <?php endif; ?>
-
+                    <li><a href="index.php">HOME</a></li>
+                    <li><a href="schedule.php">SCHEDULE</a></li>
+                    <?php
+                    session_start();
+                    if($_SESSION['loggedin'] == TRUE){
+                      echo "<li><a href=\"profile.php\">PROFILE</a></li>";
+                      echo "<li><a href=\"logout.php\">LOGOUT</a></li>";
+                    }
+                    else {
+                      echo "<li><a href=\"login.php\">LOGIN/SIGNUP</a></li>";
+                    }
+                    ?>
                 </ul>
 			</div>
 		</nav>
@@ -36,8 +40,15 @@
   <h2 style = "text-align:center">Current Transportation Delays</h2>
   <br>
   <?php
+  session_start();
+
+  // use this for login display not showing failed attempt
+  $_SESSION['loginattempt'] = "undefined";
+  $_SESSION['loggedin'] = FALSE;
+  $_SESSION['passwordsNotMatching'] = FALSE;
+
   // connect to database
-  $conn = mysqli_connect("localhost", "root", "root", "ridekick");
+  $conn = \mysqli_connect("localhost", "root", "Test#123", "ridekick");
   if ($conn -> connect_error) {
 	  die("Connection failed:". $conn -> connect_error);
   }

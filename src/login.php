@@ -18,29 +18,24 @@
 	</head>
 	<body>
 		<div class="login">
-			<h1>Create an Account</h1>
+			<h1>Login</h1>
 			<form action="config.php" method="post">
-				<label for="name">
+				<label for="username">
 					<i class="fas fa-user"></i>
 				</label>
-				<input type="text" name="name" placeholder="Enter Name" id="username" required>
+				<input type="text" name="username" placeholder="Username" id="username" required>
 				<label for="password">
 					<i class="fas fa-lock"></i>
 				</label>
-				<input type="password" name="password" placeholder="Enter a Password" id="password" required>
-				<label for="password2">
-					<i class="fas fa-lock"></i>
-				</label>
-				<input type="password" name="password2" placeholder="Re-enter Password" id="password2" required>
-				<input type="submit" value="Create Account">
-				<input type="hidden" name="came_from" value="signup">
-
+				<input type="password" name="password" placeholder="Password" id="password" required>
+				<input type="submit" value="Login">
+				<input type="hidden" name="came_from" value="login">
 			</form>
-
+			<p>Don't have an account? <a href="signup.php">Create account</a> now!</p>
 			<?php
 				session_start();
-				if($_SESSION['passwordsNotMatching'] == TRUE){
-					echo "<p style=\"color:red;\">Passwords do not match.</p>";
+				if($_SESSION['loginattempt'] == "failed"){
+					echo "<p style=\"color:red;\">Invalid username and/or password.</p>";
 				}
 			?>
 		</div>
