@@ -1,3 +1,7 @@
+Project Ridekick: Henry Gardner, Gabby Novack
+CSC261 Final Project Milestone 3
+Prof. Zhupa
+
 CREATE AND LOAD DATABSE
 Open load.sql and update paths to csv file in a directory with file permissions
 # Make sure that the database ridekick does not yet exist, if it does, use DROP DATABASE ridekick; to delete it
