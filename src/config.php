@@ -78,8 +78,15 @@ class DB {
 
 	// function to add an account to the user table 
 	public function add_user($name="", $password="", $password2="") {
-		// first make sure the two passwords are equal, if so then we can insert into the database
-		if($password == $password2) {
+		/*
+		- first make sure the two passwords are equal, if so then we can insert into the database
+		- make sure the password has the following:
+			- a special character
+			- is at least 8 characters long
+			- consists of both upperase and lowercase letters
+			- contains a number
+		*/ 
+		if($password == $password2 && preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $password) && !ctype_digit($password) && !ctype_lower($password) && !ctype_upper($password) && strlen($password) > 7) {
 			$_SESSION['passwordsNotMatching'] = FALSE;
 			$sql = $this -> db -> query("SELECT MAX(pid) FROM passenger");
 			if (!$sql) {
@@ -87,16 +94,14 @@ class DB {
 			} else if ($sql->num_rows == 0) {
 			  $id = 1;
 			} else {
-			  $maxid = $sql->fetch_assoc();
+			 	$maxid = $sql->fetch_assoc();
 				$id = intval(array_shift($maxid)) + 1;
 			}
 			// never store the password itself, only store hashed version
 			$hashed_password = md5($password, true);
 			$sql = $this->db->query("INSERT INTO passenger (pid, name, passHash) VALUES ('$id', '$name','$hashed_password')");
-			// make sure the query was successful
-			if($sql == TRUE){
-				echo "Account successfully created, ".'<a href="login.php">click here to return to login page.</a>';
-			}
+			header("Location: login.php");
+			exit;
 		}
 		else {
 			$_SESSION['passwordsNotMatching'] = TRUE;
@@ -162,7 +167,7 @@ if($_POST['came_from'] == "signup"){
 	}
 	// o/w attempt to verify their credentials:
 	else {
-		$instance->add_user($_POST['username'], $_POST['password'], $_POST['password2'], $_POST['type']);
+		$instance->add_user($_POST['username'], $_POST['password'], $_POST['password2']);
 	}
 }
 

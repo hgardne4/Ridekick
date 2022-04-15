@@ -23,7 +23,7 @@
 				<label for="name">
 					<i class="fas fa-user"></i>
 				</label>
-				<input type="text" name="name" placeholder="Enter Name" id="username" required>
+				<input type="text" name="username" placeholder="Enter Name" id="username" required>
 				<label for="password">
 					<i class="fas fa-lock"></i>
 				</label>
@@ -40,7 +40,7 @@
 			<?php
 				session_start();
 				if($_SESSION['passwordsNotMatching'] == TRUE){
-					echo "<p style=\"color:red;\">Passwords do not match.</p>";
+					echo "<p style=\"color:red;\">Passwords do not match or an error occured when creating account.</p>";
 				}
 			?>
 		</div>
