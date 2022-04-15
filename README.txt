@@ -2,6 +2,8 @@ Project Ridekick: Henry Gardner, Gabby Novack
 CSC261 Final Project Milestone 3
 Prof. Zhupa
 
+NOTE: taskB is contained within the src directory
+
 How to run:
 This project is being locally hosted for ease of development before release. We are hosting with PHP's built-in webserver. First make sure you are in the src directory and then execute the following command:
 

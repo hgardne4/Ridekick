@@ -1,0 +1,7 @@
+Project Ridekick: Henry Gardner, Gabby Novack
+CSC261 Final Project Milestone 3
+Prof. Zhupa
+
+As discussed in class, we were not required to host on Betaweb. For ease of development, we decided to host on our local machines. Instructions on running the program with PHP's built-in webserver can be found in the main README.txt file located in the main directory. The link that accesses the program is as follows:
+
+	http://127.0.0.1:8000
