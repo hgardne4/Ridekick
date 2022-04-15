@@ -57,6 +57,7 @@ class DB {
 			$_SESSION['id'] = $user['pid'];
 			$_SESSION['loginattempt'] = "success";
 			$_SESSION['passwordsNotMatching'] = FALSE;
+			$_SESSION['invalidappointment'] = FALSE;
 			echo "Welcome " . $username . "\n";
 			header('Location: profile.php');
 			exit;
@@ -103,13 +104,43 @@ class DB {
 			exit;
 		}
 	}
+
+	// function to add appointment to the the appointment table
+	public function add_appointment($service="", $date="", $deptime="") {
+		$_SESSION['invalidappointment'] = FALSE;
+		$sql = $this->db->query("SELECT * FROM service WHERE sid = '$service' AND date = '$date' AND deptime = '$deptime' AND nseats > 0");
+		if (mysqli_num_rows($sql) > 0) {
+
+			// if there exists a row with this data update the appointment and service table!
+			$sql2 = $this->db->query("UPDATE service SET nseats = nseats - 1 WHERE sid = '$service' AND date = '$date' AND deptime = '$deptime' AND nseats > 0");
+			$pid = $_SESSION['id'];
+			$sql3 = $this->db->query("INSERT INTO appointment (date, time, aid, isfor_sid, schedules_pid) SELECT '$date', '$deptime', MAX(aid) + 1, $service, '$pid' FROM appointment");
+	
+			$_SESSION['validappointment'] = TRUE;
+			header("Location: appointment.php");
+			exit;
+			
+			
+		} 
+		// o/w don't add to the table as we cannot add appointment
+		else {
+			$_SESSION['invalidappointment'] = TRUE;
+			header("Location: appointment.php");
+			exit;
+		}	
+	}
 }
 
 // TESTING THE CONNECTION
 $instance = new DB;
 $instance->__construct();
 
-// LOGIN.HTML
+$_SESSION['loginattempt'] = "undefined";
+$_SESSION['passwordsNotMatching'] = FALSE;
+$_SESSION['invalidappointment'] = FALSE;
+$_SESSION['validappointment'] = FALSE;
+
+// LOGIN
 // now check when the user enters data into the login form page, exit if they attempt to login with not all needed info
 if($_POST['came_from'] == "login"){
 	if(!isset($_POST['username'], $_POST['password'])) {
@@ -121,7 +152,7 @@ if($_POST['came_from'] == "login"){
 	}
 }
 
-// SIGNUP.HTML
+// SIGNUP
 // now check when the user enters data into the signup form page, exit if they attempt to login with not all needed info
 if($_POST['came_from'] == "signup"){
 	if(!isset($_POST['username'], $_POST['password'], $_POST['password2'])) {
@@ -132,6 +163,20 @@ if($_POST['came_from'] == "signup"){
 	// o/w attempt to verify their credentials:
 	else {
 		$instance->add_user($_POST['username'], $_POST['password'], $_POST['password2'], $_POST['type']);
+	}
+}
+
+// APPOINTMENT
+// now check when the user enters data into the appointment form page, exit if they attempt to login with not all needed info
+if($_POST['came_from'] == "appointment"){
+	if(!isset($_POST['service'], $_POST['date'], $_POST['deptime'])) {
+		$_SESSION['invalidappointment'] = TRUE;
+		header("Location: appointment.php");
+		exit;	
+	}
+	// o/w attempt to verify their credentials:
+	else {
+		$instance->add_appointment($_POST['service'], $_POST['date'], $_POST['deptime']);
 	}
 }
 ?>

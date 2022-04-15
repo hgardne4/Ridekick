@@ -9,28 +9,28 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
 
-    <section class="header">
-	<div class="text-box">
-			<h1>Ridekick Transportation Service</h1>
-			<p>Explore the University of Rochester's campus and the greater Rochester area all through this one convenient site!  
-			</p>
-			<a href="login.html" class="page-btn">Login to get started!</a>
-		</div>
+  <section class="header">
+    	<div class="text-box">
+    			<h1>Ridekick Transportation Service</h1>
+    			<p>Explore the University of Rochester's campus and the greater Rochester area all through this one convenient site!  
+    			</p>
+    			<a href="login.php" class="page-btn">Login to get started!</a>
+    	</div>
 			<div class="nav-links" id="navLinks">
-                <ul>
-                    <li><a href="index.php">HOME</a></li>
-                    <li><a href="schedule.php">SCHEDULE</a></li>
-                    <?php
-                    session_start();
-                    if($_SESSION['loggedin'] == TRUE){
-                      echo "<li><a href=\"profile.php\">PROFILE</a></li>";
-                      echo "<li><a href=\"logout.php\">LOGOUT</a></li>";
-                    }
-                    else {
-                      echo "<li><a href=\"login.php\">LOGIN/SIGNUP</a></li>";
-                    }
-                    ?>
-                </ul>
+          <ul>
+              <li><a href="index.php">HOME</a></li>
+              <li><a href="schedule.php">SCHEDULE</a></li>
+              <?php
+              session_start();
+              if($_SESSION['loggedin'] == TRUE){
+                echo "<li><a href=\"profile.php\">PROFILE</a></li>";
+                echo "<li><a href=\"logout.php\">LOGOUT</a></li>";
+              }
+              else {
+                echo "<li><a href=\"login.php\">LOGIN/SIGNUP</a></li>";
+              }
+              ?>
+          </ul>
 			</div>
 		</nav>
 	</section>
@@ -44,8 +44,9 @@
 
   // use this for login display not showing failed attempt
   $_SESSION['loginattempt'] = "undefined";
-  $_SESSION['loggedin'] = FALSE;
   $_SESSION['passwordsNotMatching'] = FALSE;
+  $_SESSION['invalidappointment'] = FALSE;
+  $_SESSION['validappointment'] = FALSE;
 
   // connect to database
   $conn = \mysqli_connect("localhost", "root", "Test#123", "ridekick");

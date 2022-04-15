@@ -37,6 +37,7 @@ Prof. Zhupa
                 <ul>
                     <li><a href="index.php">HOME</a></li>
                     <li><a href="schedule.php">SCHEDULE</a></li>
+                    <li><a href="appointment.php">MAKE APPOINTMENT</a></li>
                     <li><a href="logout.php">LOGOUT</a></li>
                 </ul>
             </div>
@@ -58,7 +59,8 @@ if ($conn -> connect_error) {
 	die("Connection failed:". $conn -> connect_error);
 }
 // get the cols we need
-$sql = "SELECT DATE_FORMAT(date, '%m/%d/%y') as date, TIME_FORMAT(time, '%h:%i %p') as time, aid, isfor_sid from appointment";
+$pid = $_SESSION['id'];
+$sql = "SELECT DATE_FORMAT(date, '%m/%d/%y') as date, TIME_FORMAT(time, '%h:%i %p') as time, aid, isfor_sid FROM appointment WHERE schedules_pid = '$pid'";
 $result = $conn -> query($sql);
 // make sure has at least one row
 if ($result -> num_rows > 0) {
