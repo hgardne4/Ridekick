@@ -8,3 +8,7 @@ PATHS FOR GABBY'S MACHINE:
 C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/<name>.csv
 C:/Users/gabri/Documents/Ridekick/taskC/create.sql
 C:/Users/gabri/Documents/Ridekick/taskC/load.sql
+
+PATHS FOR HENRY's MACHINE:
+/var/lib/mysql-files/<name>.csv
+Manually entered create.sql and load.sql commands into terminal.
